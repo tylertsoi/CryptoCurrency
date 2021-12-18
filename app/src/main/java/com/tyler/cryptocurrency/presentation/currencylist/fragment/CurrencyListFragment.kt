@@ -1,10 +1,10 @@
 package com.tyler.cryptocurrency.presentation.currencylist.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tyler.cryptocurrency.databinding.CurrencyListFragmentBinding
@@ -13,6 +13,10 @@ import com.tyler.cryptocurrency.presentation.currencylist.adapter.CurrencyListAd
 import com.tyler.cryptocurrency.presentation.currencylist.adapter.OnCurrencyInfoClickListener
 import com.tyler.cryptocurrency.presentation.currencylist.viewmodel.CurrencyListDisplayViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CurrencyListFragment(private val onItemClickListener: OnCurrencyInfoClickListener) :
@@ -48,13 +52,19 @@ class CurrencyListFragment(private val onItemClickListener: OnCurrencyInfoClickL
     }
 
     private fun observe() {
-        viewModel.displayList.observe(viewLifecycleOwner, {
-            adapter.updateList(it)
-            viewModel.showWelcomeMessage.postValue(it.isEmpty())
-        })
+        viewModel.displayList.runCatching {
+            CoroutineScope(Dispatchers.IO).launch {
+                collect {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        adapter.updateList(it)
+                        viewModel.showWelcomeMessage.postValue(it.isEmpty())
+                    }
+                }
+            }
+        }
         viewModel.showWelcomeMessage.observe(viewLifecycleOwner, {
             // hide welcome message if data is not empty
-            with(binding){
+            with(binding) {
                 welcomeMessage.visibility = if (it) View.VISIBLE else View.GONE
                 recyclerView.visibility = if (it) View.GONE else View.VISIBLE
             }

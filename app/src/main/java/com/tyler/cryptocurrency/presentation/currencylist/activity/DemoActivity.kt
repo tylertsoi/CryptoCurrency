@@ -1,13 +1,10 @@
 package com.tyler.cryptocurrency.presentation.currencylist.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import com.tyler.cryptocurrency.databinding.DemoActivityBinding
 import com.tyler.cryptocurrency.domain.entities.CurrencyInfo
 import com.tyler.cryptocurrency.presentation.currencylist.adapter.OnCurrencyInfoClickListener

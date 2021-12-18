@@ -4,14 +4,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.tyler.cryptocurrency.data.repositories.realm.RealmCurrencyListRepo
 import com.tyler.cryptocurrency.data.repositories.realm.model.RealmCurrencyInfo
-import com.tyler.cryptocurrency.domain.entities.CurrencyInfo
 import com.tyler.cryptocurrency.domain.interfaces.repositories.CurrencyListRepo
 import com.tyler.cryptocurrency.infrastructure.database.RealmManager
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.executeTransactionAwait
 import kotlinx.coroutines.runBlocking
-
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before

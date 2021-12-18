@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/short_name"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="C" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="start|center_vertical"
+        android:textColor="@color/text_color"
+        android:textSize="14sp"
+        android:layout_marginStart="10dp"
+        tools:text="Crypto.com"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/short_name"
+        app:layout_constraintEnd_toStartOf="@id/symbol"/>
+
+    <TextView
+        android:id="@+id/symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="MCO" />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="9dp"
+        android:gravity="center"
+        android:src="@drawable/right_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@color/light_grey"
+        tools:text="B" />
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/line_color"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CryptoCurrency</string>
+    <string name="page_title">CryptoCurrency</string>
+    <string name="load_data">Load Data From DB</string>
+    <string name="sort_data">Sort Data</string>
+    <string name="welcome_message">Welcome to currency info app, please click below buttons to continue.</string>
+</resources>

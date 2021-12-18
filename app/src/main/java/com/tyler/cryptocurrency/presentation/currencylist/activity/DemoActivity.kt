@@ -2,6 +2,8 @@ package com.tyler.cryptocurrency.presentation.currencylist.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -15,6 +17,7 @@ import com.tyler.cryptocurrency.util.clickWithDebounce
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -36,8 +39,6 @@ class DemoActivity : AppCompatActivity(), OnCurrencyInfoClickListener {
                 )
                 .commitNow()
         }
-
-        initObserver()
         initListeners()
     }
 
@@ -57,7 +58,7 @@ class DemoActivity : AppCompatActivity(), OnCurrencyInfoClickListener {
             // runBlocking wait until process is finish
             loadDataButton.clickWithDebounce(0, action = {
                 runBlocking {
-                    viewModel.fetchCurrencyList()
+                    fetchCurrency()
                 }
             })
             sortDataButton.clickWithDebounce(0, action = {
@@ -70,16 +71,23 @@ class DemoActivity : AppCompatActivity(), OnCurrencyInfoClickListener {
         }
     }
 
-    private fun initObserver() {
-        viewModel.currencyList.observe(this, Observer { list ->
-            supportFragmentManager.findFragmentByTag(CurrencyListFragment.tag)?.let {
-                (it as CurrencyListFragment).updateList(list)
+    private fun fetchCurrency() {
+        viewModel.fetchCurrencyList().runCatching {
+            CoroutineScope(Dispatchers.IO).launch {
+                collect { list ->
+                    supportFragmentManager.findFragmentByTag(CurrencyListFragment.tag)?.let {
+                        (it as CurrencyListFragment).updateList(list)
+                    }
+                }
             }
-        })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.currencyList.removeObservers(this)
+        }.onFailure {
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(
+                    this@DemoActivity,
+                    "something failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

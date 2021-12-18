@@ -1,7 +1,8 @@
 package com.tyler.cryptocurrency.domain.interfaces.repositories
 
 import com.tyler.cryptocurrency.domain.entities.CurrencyInfo
+import kotlinx.coroutines.flow.Flow
 
 interface CurrencyListRepo {
-    suspend fun getCurrencyList() : List<CurrencyInfo>
+    val currencyListFlow: Flow<List<CurrencyInfo>>
 }

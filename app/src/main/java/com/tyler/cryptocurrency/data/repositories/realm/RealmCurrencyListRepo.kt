@@ -5,13 +5,19 @@ import com.tyler.cryptocurrency.data.repositories.realm.model.toDomainCurrencyIn
 import com.tyler.cryptocurrency.domain.entities.CurrencyInfo
 import com.tyler.cryptocurrency.domain.interfaces.repositories.CurrencyListRepo
 import io.realm.Realm
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RealmCurrencyListRepo @Inject constructor() : CurrencyListRepo {
     lateinit var realm: Realm
-    override suspend fun getCurrencyList(): List<CurrencyInfo> {
+
+    override val currencyListFlow: Flow<List<CurrencyInfo>> = flow {
         realm = Realm.getDefaultInstance()
-        val rmCurrencies = realm.where(RealmCurrencyInfo::class.java)
-        return rmCurrencies.findAll().mapNotNull { it.toDomainCurrencyInfo() }
-    }
+        val records = realm.where(RealmCurrencyInfo::class.java)
+            .findAll().mapNotNull { it.toDomainCurrencyInfo() }
+        emit(records)
+    }.flowOn(Dispatchers.IO)
 }
